@@ -1,0 +1,259 @@
+<html>
+
+	
+
+		<head>
+		<title>Hospital Database</title>
+
+		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1">
+  		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+		<style>
+
+
+			table {
+			  font-family: arial, sans-serif;
+			  border-collapse: collapse;
+			  width: 100%;
+			}
+
+			td, th {
+			  border: 1px solid #dddddd;
+			  text-align: left;
+			  padding: 8px;
+			}
+
+			tr:nth-child(even) {
+			  background-color: #dddddd;
+			}
+
+		</style>
+
+
+	</head>
+	
+	<body>
+
+		{% if request.user.is_authenticated %}
+
+		<div align="right">
+
+			<button type="button" class="btn btn-danger" onclick="window.location.href='/logouts'">Logout</button>
+			<button type="button" class="btn btn-danger" onclick="window.location.href='/change_pass_form'">Change Password</button>
+		</div>	
+
+		<br>
+
+		<center>
+		
+			<h1><code>Hello {{request.user.username}}</code></h1> <br><br>
+			<h2>This is the current status of your hospital</h2><br>
+		
+		</center>	
+
+		<table>
+		  <tr>
+		   
+		    <th>Name</th>
+		    <th>Area</th>
+		    <th>No. of Covid Patients</th>
+		    <th>No. of Beds</th>
+		    <th>No. of PPE-Kits</th>
+		    <th>No. of Masks</th>
+		    <th>No. of ICU Beds</th>
+		    <th>No. of Ventilators</th>
+
+		    
+		  </tr>
+
+		  <tr>
+		    <td>{{apna_hospital.name}}</td>
+		    <td>{{apna_hospital.area}}</td>
+		    <td>{{apna_hospital.no_of_covid_patients}}</td>
+		    <td>{{apna_hospital.no_of_beds}}</td>
+		    <td>{{apna_hospital.no_of_ppe_kits}}</td>
+		    <td>{{apna_hospital.no_of_masks}}</td>
+		    <td>{{apna_hospital.no_of_icu_beds}}</td>
+		    <td>{{apna_hospital.no_of_ventilators}}</td>
+
+		  </tr>
+
+		  
+		</table>	
+
+		<br><br>
+
+		<center>
+
+			<button type="button" class="btn btn-primary" onclick="myFunction()">Update??</button>
+
+			<br><br>
+
+
+			<div class ="container">
+				<div id='update_form' style="display:none">
+
+					<form method="POST" action="/update" >
+					{% csrf_token %}	
+
+						<div class="form-group">	
+						    <label> Enter updated number of covid patients  </label>
+					    	<input class="form-control" name="patients" value={{apna_hospital.no_of_covid_patients}} > 
+					    </div>
+					    
+					    <div class="form-group">		
+						    <label> Enter updated number of beds available  </label>
+					    	<input class="form-control" name="beds" value={{apna_hospital.no_of_beds}}>	
+					    </div>
+					    
+					    <div class="form-group">		
+						    <label> Enter updated number of PPE Kits available  </label>
+					    	<input class="form-control" name="ppe_kits" value={{apna_hospital.no_of_ppe_kits}}>
+					    </div>		
+
+					    <div class="form-group">	
+						    <label> Enter updated number of masks available  </label>
+					    	<input class="form-control" name="masks" value={{apna_hospital.no_of_masks}}>  
+					    </div>
+					    		
+					    <div class="form-group">	
+						    <label> Enter updated number of ICU Beds available  </label>
+					    	<input class="form-control" name="icu_beds" value={{apna_hospital.no_of_icu_beds}}>  
+					    </div>
+					    
+					    <div class="form-group">		
+						    <label> Enter updated number of ventilators available  </label>
+					    	<input class="form-control" name="ventilators" value={{apna_hospital.no_of_ventilators}}>			 
+					    </div>	   	
+
+				    	<input type="hidden" value={{apna_hospital.id}} name="h_id" />
+
+				    	<!-- <input type="hidden" value={{username}} name="username" /> -->
+
+
+
+				    	
+
+				    	<input class="btn btn-dark" type="submit" value="Deploy">
+
+					</form>	
+
+				</div>
+			</div>	
+
+			<h2>These are the Corona Warriors working in your hospital</h2>
+
+			<div class="row">
+
+				<div class="col-sm-4">
+				</div>
+
+				<div class="col-sm-4">
+					{% if w_cw %}
+						<table>
+						  <tr>
+						   
+						    <th>Name</th>
+						    <th>Working Since</th>
+						    
+						  </tr>
+
+						  {% for i in w_cw %}
+
+						  <tr>
+						    <td>{{i.name}}</td>
+						    <td>{{i.working_since}}</td>
+						  </tr>
+
+						  {% endfor %}
+
+						</table>
+					{% else %}
+						<p>No working corona warriors in your hospital</p>	
+					{% endif %}
+				</div>
+			</div>		
+
+			<br><br>
+
+
+			<button class="btn btn-warning" onclick="quarantine()">Quarantine a Corona Warrior in your Hospital ??</button><br><br>
+
+			<div class="container" id="quar" style="display:none">
+
+				<form method="POST" action="/quarantine" id="quar_form" autocomplete="off">{%csrf_token%}
+	
+					<div class="form-group">
+						<label for="name">Name:</label>
+	  					<select class="form-control" id="cw" name="cw" >
+
+						<option> --- Select Corona Warrior ---</option>	
+
+							{% for cw in w_cw %}
+
+								<option value="{{cw.id}}">{{cw.name}}</option>
+
+
+							{% endfor %}
+
+						</select>	<br>
+					</div>	
+
+					<input class="btn btn-dark" type="submit" value="Submit">
+
+				</form>	
+
+			</div>	
+
+
+		</center>
+
+		{% else %}
+
+			<center>
+				<h1> WHO ARE YOU ? </h1>
+				<button type="button" onclick="window.location.href='/god_home'" >Health Officer</button>
+				<button type="button" onclick="window.location.href='/sys_home'" >Hospital SysAd</button>
+			</center>	
+
+		{% endif %}		
+
+
+	<script>
+		
+		function myFunction()
+			{
+				  var x = document.getElementById("update_form");
+				  if (x.style.display === "none") 
+				  {
+				    x.style.display = "block";
+				  } 
+				  else 
+				  {
+				    x.style.display = "none";
+				  }
+		    }
+		function quarantine()
+			{
+				  var x = document.getElementById("quar");
+				  if (x.style.display === "none") 
+				  {
+				    x.style.display = "block";
+				  } 
+				  else 
+				  {
+				    x.style.display = "none";
+				  }
+		    }		    
+
+	</script>	
+
+
+
+	</body>	
+
+
+</html>

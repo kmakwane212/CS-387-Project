@@ -1,0 +1,528 @@
+<html>
+
+	<head>
+		<title>Hospital Database</title>
+
+
+
+		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1">
+  		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>	
+
+  		<style>
+
+			table {
+			  font-family: arial, sans-serif;
+			  border-collapse: collapse;
+			  width: 100%;
+			}
+
+			td, th {
+			  border: 1px solid #dddddd;
+			  text-align: left;
+			  padding: 8px;
+			}
+
+			tr:nth-child(even) {
+			  background-color: #dddddd;
+			}
+
+		</style>
+
+	</head>
+
+<body>
+
+
+
+	{% if request.user.is_authenticated %}
+
+		<div align="right">
+
+			<button type="button" class="btn btn-danger" onclick="window.location.href='/logouts'">Logout</button>
+			<button type="button" class="btn btn-danger" onclick="window.location.href='/change_pass_form'">Change Password</button>
+
+		</div>
+
+
+		<center>
+
+			<p id="demo"></p>
+
+			<h1>  <code>Hello {{current_user.username}}  </code></h1> <br><br>
+			<h2>Current Status of Hospitals in {{current_user.area}}</h2>
+			
+			<button type="button" class="btn btn-primary" onclick="area_ccc()">COVID care centres</button>
+
+			<div id='area_ccc' style="display:none">
+				<br>
+				<table>
+				  <tr>
+				   
+				    <th>Name</th>
+				    <th>Area</th>
+				    <th>No. of Covid Patients</th>
+				    <th>No. of Beds</th>
+				    <th>No. of PPE-Kits</th>
+				    <th>No. of Masks</th>
+				    <th>No. of ICU Beds</th>
+				    <th>No. of Ventilators</th>
+
+
+				  </tr>
+
+				  {% for i in area_ccc %}
+
+					  <tr>
+					    <td>{{i.name}}</td>
+					    <td>{{i.area}}</td>
+					    <td>{{i.no_of_covid_patients}}</td>
+					    <td>{{i.no_of_beds}}</td>
+					    <td>{{i.no_of_ppe_kits}}</td>
+					    <td>{{i.no_of_masks}}</td>
+					    <td>{{i.no_of_icu_beds}}</td>
+					    <td>{{i.no_of_ventilators}}</td>
+
+					  </tr>
+
+				  {% endfor %}
+				  
+				</table>
+
+			</div>
+
+			<br><br>
+
+
+			<button type="button" class="btn btn-primary" onclick="area_dchc()">Dedicated Covid Health Centres</button>
+
+			<div id='area_dchc' style="display:none">
+				<br>
+				<table>
+				  <tr>
+				   
+				    <th>Name</th>
+				    <th>Area</th>
+				    <th>No. of Covid Patients</th>
+				    <th>No. of Beds</th>
+				    <th>No. of PPE-Kits</th>
+				    <th>No. of Masks</th>
+				    <th>No. of ICU Beds</th>
+				    <th>No. of Ventilators</th>
+
+				  </tr>
+
+				  {% for i in area_dchc %}
+
+					  <tr>
+					    <td>{{i.name}}</td>
+					    <td>{{i.area}}</td>
+					    <td>{{i.no_of_covid_patients}}</td>
+					    <td>{{i.no_of_beds}}</td>
+					    <td>{{i.no_of_ppe_kits}}</td>
+					    <td>{{i.no_of_masks}}</td>
+					    <td>{{i.no_of_icu_beds}}</td>
+					    <td>{{i.no_of_ventilators}}</td>
+
+					  </tr>
+
+					  
+
+				  {% endfor %}
+				  
+				</table>
+
+			</div>
+
+			<br><br>
+
+			<button type="button" class="btn btn-primary" onclick="area_dch()">Dedicated COVID Hospitals</button>
+
+			<div id='area_dch' style="display:none">
+				<br>
+				<table>
+				  <tr>
+				   
+				    <th>Name</th>
+				    <th>Area</th>
+				    <th>No. of Covid Patients</th>
+				    <th>No. of Beds</th>
+				    <th>No. of PPE-Kits</th>
+				    <th>No. of Masks</th>
+				    <th>No. of ICU Beds</th>
+				    <th>No. of Ventilators</th>
+
+				  </tr>
+
+				  {% for i in area_dch %}
+
+					  <tr>
+					    <td>{{i.name}}</td>
+					    <td>{{i.area}}</td>
+					    <td>{{i.no_of_covid_patients}}</td>
+					    <td>{{i.no_of_beds}}</td>
+					    <td>{{i.no_of_ppe_kits}}</td>
+					    <td>{{i.no_of_masks}}</td>
+					    <td>{{i.no_of_icu_beds}}</td>
+					    <td>{{i.no_of_ventilators}}</td>
+
+					  </tr>
+
+
+				  {% endfor %}
+				  
+				</table>
+
+			</div>
+
+			<br><br>
+
+			<h2>Current Status of Corona Warriors in {{current_user.area}}</h2>
+
+			<button type="button" class="btn btn-info" onclick="w_cw()">Working Corona warriors</button>			
+
+			<div id='w_cw' style="display:none">
+				<br>
+				{% if w_cw %}	
+					<table>
+					  <tr>
+					   
+					    <th>Name</th>
+					    <th>Current Hospital</th>
+					    <th>Working Since</th>
+
+					  </tr>
+
+					  {% for i in w_cw %}
+
+		
+
+						  <tr>
+						  	<td>{{i.name}}</td>
+						  	<td>{{i.last_placed}}</td>
+						  	<td>{{i.working_since}}</td>
+						  </tr>	
+
+					  {% endfor %}
+					  
+					</table>	
+				{% else %}
+					<p>No working corona warriors in your area</p>
+				{% endif %}
+
+			</div>
+
+			<br><br>
+
+			<button type="button" class="btn btn-info" onclick="q_cw()">Quarantined Corona warriors</button>			
+
+			<div id='q_cw' style="display:none">
+				<br>
+				{% if q_cw %}	
+					<table>
+					  <tr>
+					   
+					    <th>Name</th>
+					    <th>Last Hospital</th>
+					    
+					    <th>Quarantined since</th>
+
+					  </tr>
+
+					  {% for i in q_cw %}
+
+						  <tr>
+						    <td>{{i.name}}</td>
+						    <td>{{i.last_placed}}</td>
+						    
+						    <td>{{i.quarantined_since}}</td>
+						  </tr>
+
+					  {% endfor %}
+					  
+					</table>
+				{% else %}
+					<p>No quarantined corona warriors in you area</p>
+				{% endif %}	
+			</div>
+
+			<br><br><br><br><br>
+
+			<!-- registering corona warrior -->
+			<div class="container">
+
+				<div class="row">
+
+					<div class="col-sm-4">
+						
+						<button type="button" class="btn btn-warning" onclick="register()">Register Corona Warrior in your Area ??</button><br><br>
+
+						<div id="reg" style="display:none">
+							<br>
+							<form method="POST" action="/register" id="reg-form" autocomplete="off">{%csrf_token%}
+				
+								<div class="form-group">
+									<label for="name">Name:</label>
+				  					<input class="form-control" placeholder="Enter name" type="text" id="name" name="name"><br>
+				  				</div>	
+
+				  				<div class="form-group">
+				  					<label for="hospital">Assign a hospital:</label>
+									<select class="form-control" id="hospital" name="hospital" >
+
+									<option> --- Select hospital in your area ---</option>	
+
+										{% for hosp in area_hospitals %}
+
+											<option value="{{hosp.id}}">{{hosp.name}}</option>
+
+
+										{% endfor %}
+
+									</select>	
+								</div>	<br>
+
+								<input class="btn btn-dark" type="submit" value="Submit">
+
+							</form>	
+
+						</div>	
+
+					</div>	
+			<!-- transferring a quarantined corona warrior to another hospital -->
+
+			
+
+				
+
+					<div class="col-sm-4">
+
+						<button type="button" class="btn btn-warning" onclick="transfer()">Assign a hospital to a quarantined corona warrior ??</button><br><br>
+
+						<div id="trans" style="display:none">
+							<br>
+							<form method="POST" action="/transfer" id="transfer-form" autocomplete="off">{%csrf_token%}
+				
+								<div class="form-group">
+									<label for="name">Name:</label>
+				  					<select class="form-control" id="name" name="cw_id" >
+
+									<option> --- Select corona warrior  ---</option>	
+
+										{% for q in q_cw %}
+
+											<option value="{{q.id}}">{{q.name}}</option>
+
+
+										{% endfor %}
+
+									</select>
+								</div><br>	
+
+								<div class="form-group">
+				  					<label for="hospital">Assign a hospital:</label>
+									<select class="form-control" id="hospital" name="hospital" >
+
+									<option> --- Select hospital in your area ---</option>	
+
+										{% for hosp in area_hospitals %}
+
+											<option value="{{hosp.id}}">{{hosp.name}}</option>
+
+
+										{% endfor %}
+
+									</select>	
+								</div> <br>	
+								<input class="btn btn-dark" type="submit" value="Submit">
+
+							</form>	
+
+						</div>			
+					
+					</div>	
+					<!-- trnasferring a quarantined corona warrior to another area -->
+
+					<div class="col-sm-4">
+						<button type="button" class="btn btn-warning" onclick="deport()">Assign another area to a quarantined corona warrior ??</button><br><br>
+
+						<div id="deport" style="display:none">
+							<br>
+							<form method="POST" action="/deport" id="deport-form" autocomplete="off">{%csrf_token%}
+				
+								<div class="form-group">
+									<label for="name">Name:</label>
+				  					<select class="form-control" id="name" name="cw_id" >
+
+									<option> --- Select corona warrior  ---</option>	
+
+										{% for q in q_cw %}
+
+											<option value="{{q.id}}">{{q.name}}</option>
+
+
+										{% endfor %}
+
+									</select>	
+								</div>	<br>
+
+								<div class="form-group">
+
+				  					<label for="area">Assign an area:</label>
+									<select class="form-control" id="area" name="new_area" >
+
+									<option> --- Select new area for your corona warrior ---</option>	
+
+										{% for area in all_areas %}
+
+											<option value="{{area.id}}">{{area.area_name}}</option>
+
+
+										{% endfor %}
+
+									</select>	
+
+								</div> <br>	
+								<input class="btn btn-dark" type="submit" value="Submit">
+
+							</form>	
+
+						</div>	
+
+					</div>	
+					
+			</div>
+
+		</center>
+
+			
+	{% else %}
+
+		<center>
+			<h1> WHO ARE YOU ? </h1>
+			<button type="button" onclick="window.location.href='/god_home'" >Health Officer</button>
+			<button type="button" onclick="window.location.href='/sys_home'" >Hospital SysAd</button>
+		</center>	
+
+	{% endif %}	
+	<script type="text/javascript">
+
+		function deport()
+			{
+				  var x = document.getElementById("deport");
+				  if (x.style.display === "none") 
+				  {
+				    x.style.display = "block";
+				  } 
+				  else 
+				  {
+				    x.style.display = "none";
+				  }
+		    }
+
+
+		function transfer()
+			{
+				  var x = document.getElementById("trans");
+				  if (x.style.display === "none") 
+				  {
+				    x.style.display = "block";
+				  } 
+				  else 
+				  {
+				    x.style.display = "none";
+				  }
+		    }
+
+		
+		function register()
+			{
+				  var x = document.getElementById("reg");
+				  if (x.style.display === "none") 
+				  {
+				    x.style.display = "block";
+				  } 
+				  else 
+				  {
+				    x.style.display = "none";
+				  }
+		    }
+
+		function area_ccc()
+			{
+				  var x = document.getElementById("area_ccc");
+				  if (x.style.display === "none") 
+				  {
+				    x.style.display = "block";
+				  } 
+				  else 
+				  {
+				    x.style.display = "none";
+				  }
+		    }
+		function area_dchc()
+			{
+				  var x = document.getElementById("area_dchc");
+				  if (x.style.display === "none") 
+				  {
+				    x.style.display = "block";
+				  } 
+				  else 
+				  {
+				    x.style.display = "none";
+				  }
+		    }
+		function area_dch()
+			{
+				  var x = document.getElementById("area_dch");
+				  if (x.style.display === "none") 
+				  {
+				    x.style.display = "block";
+				  } 
+				  else 
+				  {
+				    x.style.display = "none";
+				  }
+		    }
+		function w_cw()
+			{
+				  var x = document.getElementById("w_cw");
+				  if (x.style.display === "none") 
+				  {
+				    x.style.display = "block";
+				  } 
+				  else 
+				  {
+				    x.style.display = "none";
+				  }
+		    }
+		function q_cw()
+			{
+				  var x = document.getElementById("q_cw");
+				  if (x.style.display === "none") 
+				  {
+				    x.style.display = "block";
+				  } 
+				  else 
+				  {
+				    x.style.display = "none";
+				  }
+		    }
+		function update(){
+				  var x = document.getElementById("update_form");
+				  if (x.style.display === "none") 
+				  {
+				    x.style.display = "block";
+				  } 
+				  else 
+				  {
+				    x.style.display = "none";
+				  }			
+		}
+
+	</script>
+
+</body>
+</html>

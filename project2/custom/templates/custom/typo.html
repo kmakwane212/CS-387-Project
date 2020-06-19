@@ -1,0 +1,41 @@
+<html>
+
+<head>
+
+		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1">
+  		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+</head>	
+<body>
+  <center>
+
+ <h1>Enter your credentials</h1>   
+
+	<div class="container">
+		  <form method="POST" action="/change_password" autocomplete="off">{%csrf_token%}
+		   
+		  <div class="form-group">	
+			  <label for="old_pass">Old Password:</label><br>
+			  <input class="form-control" type="password" id="old_pass" name="old_pass"><br>
+		  </div>
+
+		  <div class="form-group">
+			  <label for="new_pass">New password:</label><br>
+			  <input class="form-control" type="password" id="new_pass" name="new_pass"><br>	
+		  </div> 		  	  
+		  <div class="form-group">
+			  <label for="conf_pass"> Confirm New password:</label><br>
+			  <input class="form-control" type="password" id="new_pass" name="conf_pass"><br>	
+		  </div> 			  
+		  <input class="btn btn-dark" type="submit" value="Submit">
+
+		  </form>
+	</div>		  
+
+	<p>New password and Confirm password do not match</p>
+   <center>
+<body>
+<html>
